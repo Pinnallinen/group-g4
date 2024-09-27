@@ -30,36 +30,67 @@ public class WeatherService {
         // Parse XML Data
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-        Document document = builder.parse(new InputSource(new StringReader(xmlData)));
+        assert xmlData != null;
+        Document document = builder.parse(new java.io.ByteArrayInputStream(xmlData.getBytes()));
 
-        NodeList temperatureNodes = document.getElementsByTagName("wml2:MeasurementTVP");
-
-        String time = "Unknown";
+        String temperatureTime = "Unknown";
+        String windTime = "Unknown";
         float temperature = 0f;
+        float windSpeed = 0f;
 
-        String description = "";
-        if (temperatureNodes.getLength() > 0) {
-            NodeList childNodes = temperatureNodes.item(temperatureNodes.getLength() - 1).getChildNodes();
-            for (int i = 0; i < childNodes.getLength(); i++) {
-                Node node = childNodes.item(i);
-                if (node.getNodeName().equals("wml2:time")) {
-                    time = node.getTextContent();
-                }
-                else if (node.getNodeName().equals("wml2:value")) {
-                    System.out.println("value: " + node.getTextContent());
-                    temperature = Float.parseFloat(node.getTextContent());
+        // Parse temperature values
+        NodeList measurementNodes = document.getElementsByTagName("wml2:MeasurementTimeseries");
+        for (int i = 0; i < measurementNodes.getLength(); i++) {
+            String description = measurementNodes.item(i).getAttributes().getNamedItem("gml:id").getTextContent();
+            if (description.contains("temperature")) {
+                NodeList temperatureValues = measurementNodes.item(i).getChildNodes();
+                for (int j = 0; j < temperatureValues.getLength(); j++) {
+                    if (temperatureValues.item(j).getNodeName().equals("wml2:point")) {
+                        NodeList pointNodes = temperatureValues.item(j).getChildNodes();
+                        System.out.println("wml2:point found");
+                        for (int k = 0; k < pointNodes.getLength(); k++)
+                        {
+                            if (pointNodes.item(k).getNodeName().equals("wml2:MeasurementTVP")) {
+                                String time = pointNodes.item(k).getChildNodes().item(1).getTextContent();
+                                String value = pointNodes.item(k).getChildNodes().item(3).getTextContent();
+                                System.out.println("Temperature at " + time + ": " + value + " °C");
+
+                                temperatureTime = time;
+                                temperature = Float.parseFloat(value);
+                            }
+                        }
+                    }
                 }
             }
-            description = String.format("Weather as of %s", time) ;
-        }
-        else {
-            description = "Waether couldn't be found";
+
+            if (description.contains("windspeedms")) {
+                NodeList windSpeedValues = measurementNodes.item(i).getChildNodes();
+                for (int j = 0; j < windSpeedValues.getLength(); j++) {
+                    if (windSpeedValues.item(j).getNodeName().equals("wml2:point")) {
+                        NodeList pointNodes = windSpeedValues.item(j).getChildNodes();
+                        System.out.println("wml2:point found");
+                        for (int k = 0; k < pointNodes.getLength(); k++)
+                        {
+                            if (pointNodes.item(k).getNodeName().equals("wml2:MeasurementTVP")) {
+                                String time = pointNodes.item(k).getChildNodes().item(1).getTextContent();
+                                String value = pointNodes.item(k).getChildNodes().item(3).getTextContent();
+                                System.out.println("Wind Speed at " + time + ": " + value + " m/s");
+
+                                windTime = time;
+                                windSpeed = Float.parseFloat(value);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
+        String finalDescription = "Weather in " + city + ". Temperature (C) at " + temperatureTime + ", wind speed (m/s) at " + windTime;
+
         WeatherStatus status = new WeatherStatus();
-        status.setDescription(description);
+        status.setDescription(finalDescription);
         status.setTemperature(temperature);
-        status.setWindSpeed(0f);
+        status.setWindSpeed(windSpeed);
         return status;
     }
 }
