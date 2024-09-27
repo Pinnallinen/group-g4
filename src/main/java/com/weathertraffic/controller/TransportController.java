@@ -1,5 +1,7 @@
-package com.weathertraffic;
+package com.weathertraffic.controller;
 
+import com.weathertraffic.model.TransportStatus;
+import com.weathertraffic.service.TransportService;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

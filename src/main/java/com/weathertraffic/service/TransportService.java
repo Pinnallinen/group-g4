@@ -1,5 +1,6 @@
-package com.weathertraffic;
+package com.weathertraffic.service;
 
+import com.weathertraffic.model.TransportStatus;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,4 +1,4 @@
-package com.weathertraffic;
+package com.weathertraffic.model;
 
 public class TransportStatus {
     private String description;

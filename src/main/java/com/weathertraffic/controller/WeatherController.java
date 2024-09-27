@@ -1,5 +1,7 @@
-package com.weathertraffic;
+package com.weathertraffic.controller;
 
+import com.weathertraffic.model.WeatherStatus;
+import com.weathertraffic.service.WeatherService;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,7 @@ public class WeatherController {
     private WeatherService weatherService;
 
     @GetMapping("/current/{city}")
-    public ResponseEntity<WeatherStatus> getWeather(@PathVariable String city) {
+    public ResponseEntity<WeatherStatus> getWeather(@PathVariable String city) throws Exception {
         return ResponseEntity.ok(weatherService.getWeather(city));
     }
 }
