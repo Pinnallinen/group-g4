@@ -6,13 +6,14 @@ import com.weathertraffic.model.WeatherStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.StringReader;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
 
 @Service
 public class WeatherService {
@@ -20,11 +21,19 @@ public class WeatherService {
     private static final String FMI_API_URL =
             "https://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature" +
                     "&storedquery_id=fmi::observations::weather::timevaluepair&place={city}" +
-                    "&parameters=temperature,windspeedms&starttime=2024-09-27T10:30:00Z&endtime=2024-09-27T13:40:00Z";
+                    "&parameters=temperature,windspeedms&starttime={starttime}T23:50:00Z&endtime={endtime}T23:50:00Z";
 
     public WeatherStatus getWeather(String city) throws Exception  {
         RestTemplate restTemplate = new RestTemplate();
-        String url = FMI_API_URL.replace("{city}", city);
+        Instant now = Instant.now();
+        String starttime = now.minus(1, ChronoUnit.DAYS).toString().substring(0, 10);
+        String endtime = now.toString().substring(0, 10);
+
+        String url = FMI_API_URL
+                .replace("{city}", city)
+                .replace("{starttime}", starttime)
+                .replace("{endtime}", endtime);
+
         String xmlData = restTemplate.getForObject(url, String.class);
 
         // Parse XML Data
