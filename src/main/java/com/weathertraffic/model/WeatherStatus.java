@@ -7,6 +7,7 @@ public class WeatherStatus {
     private double windSpeed;
     private double rainAmount;
     private double rainIntensity;
+    private double visibility;
 
     // Getters
     public String getDescription() {
@@ -29,6 +30,10 @@ public class WeatherStatus {
         return rainIntensity;
     }
 
+    public double getVisibility() {
+        return visibility;
+    }
+
     //Setters
     public void setDescription(String newDescription) {
         this.description = newDescription;
@@ -48,5 +53,9 @@ public class WeatherStatus {
 
     public void setRainIntensity(double rainIntensity) {
         this.rainIntensity = rainIntensity;
+    }
+
+    public void setVisibility(double visibility) {
+        this.visibility = visibility;
     }
 }

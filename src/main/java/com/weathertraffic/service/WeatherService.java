@@ -22,7 +22,7 @@ public class WeatherService {
     private static final String FMI_API_URL =
             "https://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature" +
                     "&storedquery_id=fmi::observations::weather::timevaluepair&place={city}" +
-                    "&parameters=ri_10min,r_1h,temperature,windspeedms&starttime={starttime}&endtime={endtime}";
+                    "&parameters=ri_10min,r_1h,vis,temperature,windspeedms&starttime={starttime}&endtime={endtime}";
 
     private Measurement<Float> parseMeasurement(Document document, String parameter)
     {
@@ -77,11 +77,14 @@ public class WeatherService {
         Measurement<Float> windSpeed = parseMeasurement(document, "windspeedms");
         Measurement<Float> rainAmount = parseMeasurement(document, "ri_10min");
         Measurement<Float> rainIntensity = parseMeasurement(document, "r_1h");
+        Measurement<Float> visibility = parseMeasurement(document, "vis");
 
-        String finalDescription = "Weather in " + city + ". Temperature (C) at " + temperature.getTime()
+        String finalDescription = "Weather in " + city +
+                ". Temperature (C) at " + temperature.getTime()
                 + ", wind speed (m/s) at " + windSpeed.getTime()
                 + ", rain amount (mm) at " + rainAmount.getTime()
-                + ", rain intensity (mm/h) at " + rainIntensity.getTime();
+                + ", rain intensity (mm/h) at " + rainIntensity.getTime()
+                + ", visibility at " + visibility.getTime();
 
         WeatherStatus status = new WeatherStatus();
         status.setDescription(finalDescription);
@@ -89,6 +92,7 @@ public class WeatherService {
         status.setWindSpeed(windSpeed.getData());
         status.setRainAmount(rainAmount.getData());
         status.setRainIntensity(rainIntensity.getData());
+        status.setVisibility(visibility.getData());
         return status;
     }
 
