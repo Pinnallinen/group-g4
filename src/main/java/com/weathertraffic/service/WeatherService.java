@@ -2,6 +2,7 @@
 
 package com.weathertraffic.service;
 
+import com.weathertraffic.model.Measurement;
 import com.weathertraffic.model.WeatherStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -21,33 +22,12 @@ public class WeatherService {
     private static final String FMI_API_URL =
             "https://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature" +
                     "&storedquery_id=fmi::observations::weather::timevaluepair&place={city}" +
-                    "&parameters=temperature,windspeedms&starttime={starttime}T23:50:00Z&endtime={endtime}T23:50:00Z";
+                    "&parameters=temperature,windspeedms&starttime={starttime}&endtime={endtime}";
 
-    public WeatherStatus getWeather(String city) throws Exception  {
-        RestTemplate restTemplate = new RestTemplate();
-        Instant now = Instant.now();
-        String starttime = now.minus(1, ChronoUnit.DAYS).toString().substring(0, 10);
-        String endtime = now.toString().substring(0, 10);
-
-        String url = FMI_API_URL
-                .replace("{city}", city)
-                .replace("{starttime}", starttime)
-                .replace("{endtime}", endtime);
-
-        String xmlData = restTemplate.getForObject(url, String.class);
-
-        // Parse XML Data
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        assert xmlData != null;
-        Document document = builder.parse(new java.io.ByteArrayInputStream(xmlData.getBytes()));
-
-        String temperatureTime = "Unknown";
-        String windTime = "Unknown";
-        float temperature = 0f;
-        float windSpeed = 0f;
-
+    private Measurement<Float> parseTemperature(Document document) {
         // Parse temperature values
+        float temperature = 0f;
+        String temperatureTime = "Unknown";
         NodeList measurementNodes = document.getElementsByTagName("wml2:MeasurementTimeseries");
         for (int i = 0; i < measurementNodes.getLength(); i++) {
             String description = measurementNodes.item(i).getAttributes().getNamedItem("gml:id").getTextContent();
@@ -71,7 +51,16 @@ public class WeatherService {
                     }
                 }
             }
+        }
+        return new Measurement<Float>(temperature, temperatureTime);
+    }
 
+    private Measurement<Float> parseWindSpeed(Document document) {
+        float windSpeed = 0f;
+        String windTime = "Unknown";
+        NodeList measurementNodes = document.getElementsByTagName("wml2:MeasurementTimeseries");
+        for (int i = 0; i < measurementNodes.getLength(); i++) {
+            String description = measurementNodes.item(i).getAttributes().getNamedItem("gml:id").getTextContent();
             if (description.contains("windspeedms")) {
                 NodeList windSpeedValues = measurementNodes.item(i).getChildNodes();
                 for (int j = 0; j < windSpeedValues.getLength(); j++) {
@@ -93,13 +82,45 @@ public class WeatherService {
                 }
             }
         }
+        return new Measurement<Float>(windSpeed, windTime);
+    }
 
-        String finalDescription = "Weather in " + city + ". Temperature (C) at " + temperatureTime + ", wind speed (m/s) at " + windTime;
+    private WeatherStatus getWeather(String city, String starttime, String endtime) throws Exception  {
+        RestTemplate restTemplate = new RestTemplate();
+
+        String url = FMI_API_URL
+                .replace("{city}", city)
+                .replace("{starttime}", starttime)
+                .replace("{endtime}", endtime);
+
+        String xmlData = restTemplate.getForObject(url, String.class);
+
+        // Parse XML Data
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        assert xmlData != null;
+        Document document = builder.parse(new java.io.ByteArrayInputStream(xmlData.getBytes()));
+
+        Measurement<Float> temperature = parseTemperature(document);
+        Measurement<Float> windSpeed = parseWindSpeed(document);
+
+        String finalDescription = "Weather in " + city + ". Temperature (C) at " + temperature.getTime() + ", wind speed (m/s) at " + windSpeed.getTime();
 
         WeatherStatus status = new WeatherStatus();
         status.setDescription(finalDescription);
-        status.setTemperature(temperature);
-        status.setWindSpeed(windSpeed);
+        status.setTemperature(temperature.getData());
+        status.setWindSpeed(windSpeed.getData());
         return status;
+    }
+
+    public WeatherStatus getCurrentWeather(String city) throws Exception {
+        Instant now = Instant.now();
+        String starttime = now.minus(1, ChronoUnit.DAYS).toString().substring(0, 10) + "T23:50:00Z";
+        String endtime = now.toString().substring(0, 10) + "T23:50:00Z";
+        return getWeather(city, starttime, endtime);
+    }
+
+    public WeatherStatus getWeatherAtTime(String city, String time) throws Exception {
+        return getWeather(city, time, time);
     }
 }
