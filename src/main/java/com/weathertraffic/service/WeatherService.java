@@ -22,12 +22,12 @@ public class WeatherService {
     private static final String FMI_API_URL =
             "https://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature" +
                     "&storedquery_id=fmi::observations::weather::timevaluepair&place={city}" +
-                    "&parameters=temperature,windspeedms&starttime={starttime}&endtime={endtime}";
+                    "&parameters=ri_10min,r_1h,temperature,windspeedms&starttime={starttime}&endtime={endtime}";
 
     private Measurement<Float> parseMeasurement(Document document, String parameter)
     {
         // Parse temperature values
-        float measuredValue = 0f;
+        float measuredValue = Float.NaN;
         String measurementTime = "Unknown";
         NodeList measurementNodes = document.getElementsByTagName("wml2:MeasurementTimeseries");
         for (int i = 0; i < measurementNodes.getLength(); i++) {
@@ -37,16 +37,17 @@ public class WeatherService {
                 for (int j = 0; j < temperatureValues.getLength(); j++) {
                     if (temperatureValues.item(j).getNodeName().equals("wml2:point")) {
                         NodeList pointNodes = temperatureValues.item(j).getChildNodes();
-                        System.out.println("wml2:point found");
                         for (int k = 0; k < pointNodes.getLength(); k++)
                         {
                             if (pointNodes.item(k).getNodeName().equals("wml2:MeasurementTVP")) {
                                 String time = pointNodes.item(k).getChildNodes().item(1).getTextContent();
                                 String value = pointNodes.item(k).getChildNodes().item(3).getTextContent();
-                                System.out.println("Temperature at " + time + ": " + value + " °C");
 
-                                measurementTime = time;
-                                measuredValue = Float.parseFloat(value);
+                                if (!Float.isNaN(Float.parseFloat(value)))
+                                {
+                                    measurementTime = time;
+                                    measuredValue = Float.parseFloat(value);
+                                }
                             }
                         }
                     }
@@ -74,13 +75,20 @@ public class WeatherService {
 
         Measurement<Float> temperature = parseMeasurement(document, "temperature");
         Measurement<Float> windSpeed = parseMeasurement(document, "windspeedms");
+        Measurement<Float> rainAmount = parseMeasurement(document, "ri_10min");
+        Measurement<Float> rainIntensity = parseMeasurement(document, "r_1h");
 
-        String finalDescription = "Weather in " + city + ". Temperature (C) at " + temperature.getTime() + ", wind speed (m/s) at " + windSpeed.getTime();
+        String finalDescription = "Weather in " + city + ". Temperature (C) at " + temperature.getTime()
+                + ", wind speed (m/s) at " + windSpeed.getTime()
+                + ", rain amount (mm) at " + rainAmount.getTime()
+                + ", rain intensity (mm/h) at " + rainIntensity.getTime();
 
         WeatherStatus status = new WeatherStatus();
         status.setDescription(finalDescription);
         status.setTemperature(temperature.getData());
         status.setWindSpeed(windSpeed.getData());
+        status.setRainAmount(rainAmount.getData());
+        status.setRainIntensity(rainIntensity.getData());
         return status;
     }
 
