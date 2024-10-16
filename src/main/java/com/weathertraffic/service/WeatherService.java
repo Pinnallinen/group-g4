@@ -75,15 +75,15 @@ public class WeatherService {
 
         Measurement<Float> temperature = parseMeasurement(document, "temperature");
         Measurement<Float> windSpeed = parseMeasurement(document, "windspeedms");
-        Measurement<Float> rainAmount = parseMeasurement(document, "ri_10min");
-        Measurement<Float> rainIntensity = parseMeasurement(document, "r_1h");
+        Measurement<Float> rainAmount = parseMeasurement(document, "r_1h");
+        Measurement<Float> rainIntensity = parseMeasurement(document, "ri_10min");
         Measurement<Float> visibility = parseMeasurement(document, "vis");
 
         String finalDescription = "Weather in " + city +
                 ". Temperature (C) at " + temperature.getTime()
                 + ", wind speed (m/s) at " + windSpeed.getTime()
-                + ", rain amount (mm) at " + rainAmount.getTime()
-                + ", rain intensity (mm/h) at " + rainIntensity.getTime()
+                + ", rain amount at " + rainAmount.getTime()
+                + ", rain intensity at " + rainIntensity.getTime()
                 + ", visibility at " + visibility.getTime();
 
         WeatherStatus status = new WeatherStatus();
