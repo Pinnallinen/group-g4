@@ -22,7 +22,7 @@ public class WeatherService {
     private static final String FMI_API_URL =
             "https://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature" +
                     "&storedquery_id=fmi::observations::weather::timevaluepair&place={city}" +
-                    "&parameters=ri_10min,r_1h,vis,temperature,windspeedms&starttime={starttime}&endtime={endtime}";
+                    "&parameters=n_man,ri_10min,r_1h,snow_aws,temperature,vis,windspeedms&starttime={starttime}&endtime={endtime}";
 
     private Measurement<Float> parseMeasurement(Document document, String parameter)
     {
@@ -78,13 +78,17 @@ public class WeatherService {
         Measurement<Float> rainAmount = parseMeasurement(document, "r_1h");
         Measurement<Float> rainIntensity = parseMeasurement(document, "ri_10min");
         Measurement<Float> visibility = parseMeasurement(document, "vis");
+        Measurement<Float> cloudiness = parseMeasurement(document, "n_man");
+        Measurement<Float> snowAmount = parseMeasurement(document, "snow_aws");
 
-        String finalDescription = "Weather in " + city +
-                ". Temperature (C) at " + temperature.getTime()
-                + ", wind speed (m/s) at " + windSpeed.getTime()
+        String finalDescription = "Weather in " + city
+                + ": cloud amount at " + cloudiness.getTime()
                 + ", rain amount at " + rainAmount.getTime()
                 + ", rain intensity at " + rainIntensity.getTime()
-                + ", visibility at " + visibility.getTime();
+                + ", snow amount at " + snowAmount.getTime()
+                + ", Temperature (C) at " + temperature.getTime()
+                + ", visibility at " + visibility.getTime()
+                + ", wind speed (m/s) at " + windSpeed.getTime();
 
         WeatherStatus status = new WeatherStatus();
         status.setDescription(finalDescription);
@@ -93,6 +97,8 @@ public class WeatherService {
         status.setRainAmount(rainAmount.getData());
         status.setRainIntensity(rainIntensity.getData());
         status.setVisibility(visibility.getData());
+        status.setCloudAmount(cloudiness.getData());
+        status.setSnowAmount(snowAmount.getData());
         return status;
     }
 
