@@ -1,37 +1,39 @@
 package com.weathertraffic.model;
 
-
-//Some structure, was done with the help of ChatGPT when structuring it.
-// Class representing the data of an individual sensor
 public class SensorData {
-    private int sensorId;       // Unique ID of the sensor
-    private String name;        // Full name of the sensor
-    private String shortName;   // Short name describing the sensor metric
-    private String unit;        // Unit of measurement (e.g., km/h, kpl/h)
-    private String direction;   // Traffic direction measured by the sensor
-    private String description; // Description of the sensor (in various languages)
 
+    private int sensorId;
+    private String name;
+    private String shortName;
+    private String unit;
+    private double value;              // The measured value from the sensor
+    private String timeWindowStart;    // The start time of the measurement window
+    private String timeWindowEnd;      // The end time of the measurement window
+    private String measuredTime;       // The exact time the measurement was made
 
-    // Constructor initializing all fields of the sensor
-    public SensorData(int sensorId, String name, String shortName, String unit, String direction, String description){
+    public SensorData(int sensorId, String name, String shortName, String unit,
+                      double value, String timeWindowStart, String timeWindowEnd, String measuredTime) {
         this.sensorId = sensorId;
         this.name = name;
         this.shortName = shortName;
         this.unit = unit;
-        this.direction = direction;
-        this.description = description;
+        this.value = value;
+        this.timeWindowStart = timeWindowStart;
+        this.timeWindowEnd = timeWindowEnd;
+        this.measuredTime = measuredTime;
     }
 
-    // Getters and setters to access and modify sensor fields
-    public int getSensorId(){
+    // Getters and setters for all fields
+
+    public int getSensorId() {
         return sensorId;
     }
 
     public void setSensorId(int sensorId) {
         this.sensorId = sensorId;
     }
-    
-    public String getName(){
+
+    public String getName() {
         return name;
     }
 
@@ -55,19 +57,35 @@ public class SensorData {
         this.unit = unit;
     }
 
-    public String getDirection() {
-        return direction;
+    public double getValue() {
+        return value;
     }
 
-    public void setDirection(String direction) {
-        this.direction = direction;
+    public void setValue(double value) {
+        this.value = value;
     }
 
-    public String getDescription() {
-        return description;
+    public String getTimeWindowStart() {
+        return timeWindowStart;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTimeWindowStart(String timeWindowStart) {
+        this.timeWindowStart = timeWindowStart;
+    }
+
+    public String getTimeWindowEnd() {
+        return timeWindowEnd;
+    }
+
+    public void setTimeWindowEnd(String timeWindowEnd) {
+        this.timeWindowEnd = timeWindowEnd;
+    }
+
+    public String getMeasuredTime() {
+        return measuredTime;
+    }
+
+    public void setMeasuredTime(String measuredTime) {
+        this.measuredTime = measuredTime;
     }
 }

@@ -3,55 +3,61 @@ package com.weathertraffic.model;
 import java.util.ArrayList;
 import java.util.List;
 
-
-//Some structure, was done with the help of ChatGPT when structuring it.
-// Class representing the transport status in a city, including a list of sensors
 public class TransportStatus {
-    private String description;             // General description of the transport status
-    private List<SensorData> sensors;       // List of all sensors associated with this station
-    // Add a bunch of other stuff
 
-    // Constructor initializing the list of sensors
-    public TransportStatus(){
+    private String description;
+    private List<SensorData> sensors;
+
+    public TransportStatus() {
         this.sensors = new ArrayList<>();
     }
 
-    // Getter and setter for the transport status description
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String newDescription) {
-        this.description = newDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    // Method to add a sensor to the list of sensors
-    // Takes all fields of a sensor and creates a new SensorData object
-    public void addSensorData(int sensorId, String name, String shortName, String unit, String direction, String description) {
-        // Create a new SensorData object with the given data and add it to the list
-        SensorData sensorData = new SensorData(sensorId, name, shortName, unit, direction, description);
-        this.sensors.add(sensorData);       // Add the sensor to the list of sensors
-    }
-
-    // Getter to retrieve the list of sensors
-    public List<SensorData> getSensors(){
+    public List<SensorData> getSensors() {
         return sensors;
     }
 
-    // Method to format the data in a readable way
-    public String getFormattedData() {
+    public void setSensors(List<SensorData> sensors) {
+        this.sensors = sensors;
+    }
+
+    public void addSensorData(int sensorId, String name, String shortName, String unit,
+                              double value, String timeWindowStart, String timeWindowEnd, String measuredTime) {
+        SensorData sensorData = new SensorData(sensorId, name, shortName, unit,
+                                               value, timeWindowStart, timeWindowEnd, measuredTime);
+        this.sensors.add(sensorData);
+    }
+
+    // Output in console
+    @Override
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Transport Status: ").append(description).append("\n");
-        sb.append("Sensors Data:\n");
-        for (SensorData sensor : sensors) {
-            sb.append("  Sensor ID: ").append(sensor.getSensorId()).append("\n")
-              .append("  Name: ").append(sensor.getName()).append("\n")
-              .append("  Short Name: ").append(sensor.getShortName()).append("\n")
-              .append("  Unit: ").append(sensor.getUnit()).append("\n")
-              .append("  Direction: ").append(sensor.getDirection()).append("\n")
-              .append("  Description: ").append(sensor.getDescription()).append("\n")
-              .append("  -----------------------------\n");
+
+        if (sensors == null || sensors.isEmpty()) {
+            sb.append("No sensor data available.\n");
+        } else {
+            sb.append("Sensor Data:\n");
+            for (SensorData sensor : sensors) {
+                sb.append("Sensor ID: ").append(sensor.getSensorId()).append("\n")
+                  .append("  Name: ").append(sensor.getName()).append("\n")
+                  .append("  Short Name: ").append(sensor.getShortName()).append("\n")
+                  .append("  Unit: ").append(sensor.getUnit()).append("\n")
+                  .append("  Value: ").append(sensor.getValue()).append("\n")
+                  .append("  Time Window Start: ").append(sensor.getTimeWindowStart()).append("\n")
+                  .append("  Time Window End: ").append(sensor.getTimeWindowEnd()).append("\n")
+                  .append("  Measured Time: ").append(sensor.getMeasuredTime()).append("\n")
+                  .append("----------------------------------------\n");
+            }
         }
+
         return sb.toString();
     }
 }

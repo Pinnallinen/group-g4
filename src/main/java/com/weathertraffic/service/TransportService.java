@@ -5,75 +5,89 @@ import com.weathertraffic.model.TransportStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-//Some structure, such as the if loop, was done with the help of ChatGPT when structuring it.
-// Service responsible for calling the Digitraffic API and processing data for stations and sensors
 @Service
 public class TransportService {
-    // Base URL of the Digitraffic API
+
     private static final String DIGITRAFFIC_API_URL = "https://tie.digitraffic.fi/api/tms/v1";
-    // Header to identify the user making the request
     private static final String USER_HEADER = "Digitraffic-User";
 
-    // Method to get transport data for a specific city
     public TransportStatus getTransport(String city) {
-        // WebClient to make the API call
         final WebClient client = WebClient.builder()
-                .defaultHeader(USER_HEADER, "DT/Tester") // Add the user header to the request
+                .defaultHeader(USER_HEADER, "DT/Tester")
                 .build();
-                
-        // Making a GET request to retrieve all stations
+
+        // Get all stations
         JsonNode stationResponse = client.get().uri(DIGITRAFFIC_API_URL + "/stations")
-                .retrieve().bodyToMono(JsonNode.class).block();     // Convert the response into JSON format and Block until the response is available
+                .retrieve()
+                .bodyToMono(JsonNode.class)
+                .block();
 
-        // Creating a TransportStatus object to store the city description and sensor data
+        // Create a TransportStatus object to hold the results
         TransportStatus status = new TransportStatus();
-        status.setDescription(String.format("Traffic data for %s", city));      // Set the description
+        status.setDescription(String.format("Traffic data for %s", city));
 
-        // Check if the response contains stations data in the 'features' array
-        if(stationResponse != null && stationResponse.has("features")){
-            // Loop through the stations
-            for(JsonNode station : stationResponse.get("features")){
-                // Extract the station name from the 'properties' field
+        if (stationResponse != null && stationResponse.has("features")) {
+            for (JsonNode station : stationResponse.get("features")) {
                 String stationName = station.get("properties").get("name").asText();
+                String stationId = station.get("properties").get("id").asText();
 
-                // Check if the station name contains the city name (case-sensitive)
-                if (stationName.toLowerCase().contains(city.toLowerCase())){
-                    // Extract the station ID from the 'properties' field
-                    String stationId = station.get("properties").get("id").asText();
+                // Check if the station name contains the city
+                if (stationName.contains(city)) {
+                    System.out.println("Station found: " + stationName);
+                    System.out.println("Station id: " + stationId);
 
-                    // Make a second request to get sensor data for this specific station
-                    JsonNode sensorResponse = client.get().uri(DIGITRAFFIC_API_URL + "/stations" + stationId + "/data")
-                        .retrieve().bodyToMono(JsonNode.class).block(); // Convert sensor data into JSON format and Block execution until the response is available
+                    // Fetch sensor data using the stationId
+                    JsonNode sensorResponse = client.get().uri(DIGITRAFFIC_API_URL + "/stations/" + stationId + "/data")
+                            .retrieve()
+                            .bodyToMono(JsonNode.class)
+                            .block();
 
-                    if (sensorResponse != null && sensorResponse.has("sensors")) {
-                        // Loop through the list of sensors for the station
-                        for (JsonNode sensorData: sensorResponse.get("sensors")){
-                            // Extract relevant sensor data fields
-                            int sensorId = sensorData.get("id").asInt();
-                            String name = sensorData.get("name").asText();
-                            String shortName = sensorData.get("shortName").asText();
-                            String unit = sensorData.get("unit").asText();
-                            String direction = sensorData.get("direction").asText();
-                            String description = sensorData.get("description").asText();
+                    // Log the full response from the station data endpoint
+                    System.out.println("Full sensor response for station ID " + stationId + ": " + sensorResponse.toString());
 
-                            // Add the sensor data to the TransportStatus object
-                            status.addSensorData(sensorId, name, shortName, unit, direction, description);
+                    // Now we access the "sensorValues" field
+                    if (sensorResponse != null && sensorResponse.has("sensorValues")) {
+                        JsonNode sensorValues = sensorResponse.get("sensorValues");
+
+                        for (JsonNode sensorValue : sensorValues) {
+                            try {
+                                // Safely extract sensor information, checking for nulls
+                                int sensorId = sensorValue.has("id") ? sensorValue.get("id").asInt() : 0;
+                                String name = sensorValue.has("name") ? sensorValue.get("name").asText() : "Unknown";
+                                String shortName = sensorValue.has("shortName") ? sensorValue.get("shortName").asText() : "N/A";
+                                String unit = sensorValue.has("unit") ? sensorValue.get("unit").asText() : "N/A";
+                                double value = sensorValue.has("value") ? sensorValue.get("value").asDouble() : 0.0;
+                                String timeWindowStart = sensorValue.has("timeWindowStart") ? sensorValue.get("timeWindowStart").asText() : "N/A";
+                                String timeWindowEnd = sensorValue.has("timeWindowEnd") ? sensorValue.get("timeWindowEnd").asText() : "N/A";
+                                String measuredTime = sensorValue.has("measuredTime") ? sensorValue.get("measuredTime").asText() : "N/A";
+
+                                // Log sensor information to confirm it's being added
+                                System.out.println("Adding sensor ID: " + sensorId + " Name: " + name);
+
+                                // Add the sensor data to the TransportStatus object
+                                status.addSensorData(sensorId, name, shortName, unit, value, timeWindowStart, timeWindowEnd, measuredTime);
+                            } catch (Exception e) {
+                                // Log any errors during the data extraction
+                                System.err.println("Error processing sensor data: " + e.getMessage());
+                            }
                         }
+                    } else {
+                        System.out.println("No sensors found for station: " + stationName);
                     }
                 }
             }
+        } else {
+            System.out.println("No stations found.");
         }
 
-        System.out.println(status.getFormattedData());
-
-        return status;  // Return the TransportStatus object with the processed sensor data
+        // Check if sensors were added
+        if (status.getSensors().isEmpty()) {
+            System.out.println("No sensors added to the TransportStatus object.");
+        } else {
+            System.out.println("Sensors successfully added.");
+        }
         
-        //System.out.println(response);
-
-        //// Call the api and return the response body
-        //TransportStatus exampleStatus = new TransportStatus();
-        //exampleStatus.setDescription(String.format("Example transport status for %s", city));
-        //return exampleStatus;
-
+        System.out.println(status.toString());
+        return status; // Return the TransportStatus object with all data from multiple stations
     }
 }
