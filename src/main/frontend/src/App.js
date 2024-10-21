@@ -5,9 +5,8 @@ import DonutChart from "./visualizations/DonutChart.js";
 import MapComponent from './map/MapComponent.js';
 import WeatherChart from './visualizations/WeatherChart.js';
 
-import BusRouteSearch from './BusRouteSearch/BusRouteSearch.js';
-import TodaysWeather from './Weather/TodaysWeather.js';
-import Prediction from './Prediction/Prediction.js';
+
+import Dashboard from './Dashboard/Dashboard.js';
 
 
 // TODO: mapbox / this component requires api key.
@@ -21,7 +20,7 @@ function App() {
   const [predictions, setPredictions] = useState([]);
     
   // Fetch weather data using Open-Meteo's API
-  const fetchWeatherData = async () => {
+  /*const fetchWeatherData = async () => {
       fetch(
       'https://api.open-meteo.com/v1/forecast?latitude=61.497&longitude=-23.753&current_weather=true'
       )
@@ -69,20 +68,14 @@ function App() {
       });
       setPredictions(newPredictions);
     }
-  }, [weatherData, transportData]);
+  }, [weatherData, transportData]);*/
 
   return (
     <div className="App">
 
-      <body>
-        <MapComponent />
-
-        <BusRouteSearch transportData={transportData}/>
-
-        <TodaysWeather weatherData={weatherData}/>
-
-        <Prediction predictions={predictions}/>
-      </body>
+      <main>
+        <Dashboard/>
+      </main>
     </div>
   );
 }
