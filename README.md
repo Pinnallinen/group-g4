@@ -8,7 +8,7 @@ The application is also able to simply return weather and/or traffic data based 
 
 
 ## Pre-requisites (need to be installed on the user's computer) to run the application:
-Maven (Tested on version 3.9.9)
+Maven (Tested on version 3.9.9)  
 Java (Tested on version java 23 2024-09-17 Java(TM) SE Runtime Environment (build 23+37-2369))
 
 
