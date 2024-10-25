@@ -6,17 +6,17 @@ import "./Dashboard.css";
 // Parent component for searching and displaying relevant data.
 
 const Dashboard = () => {
-    const [query, setQuery] = useState('Helsinki');
+    const [city, setCity] = useState('Helsinki');
 
-    const handleSearch = (newQuery) => {
-        setQuery(newQuery);
+    const handleSearch = (newCity) => {
+        setCity(newCity);
     };
 
     return (
         <div>
             <h1>Weather Dashboard</h1>
             <SearchComponent onSearch={handleSearch}/>
-            <WeatherDisplay query={query}/>
+            <WeatherDisplay city={city}/>
         </div>
     )
 };

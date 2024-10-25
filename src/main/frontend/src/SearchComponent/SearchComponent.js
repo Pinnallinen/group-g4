@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import "./SearchComponent.css";
 
-const SearchComponent = ({onSearch}) => {
+const SearchComponent = ({city, onSearch}) => {
   
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(city);
 
   const handleSearch = (e) => {
     e.preventDefault();
