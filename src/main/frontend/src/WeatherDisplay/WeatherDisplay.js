@@ -5,27 +5,6 @@ import BarChart from '../visualizations/BarChart';
 // Fetch and display weather data from the back-end.
 
 const WeatherDisplay = ({city}) => {
-    /*const [weather, setWeather] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-      const fetchWeatherData = async () => {
-        if (city) {
-          try {
-            setLoading(true);
-            const response = await axios.get(`/weather/${city}`);
-            setWeather(response.data);
-            setLoading(false);
-          } catch (error) {
-            setError('Failed to fetch weather data');
-            setLoading(false);
-          }
-        }
-      };
-      fetchWeatherData();
-    }, [city]);
-    */
 
     const { data: weather, loading, error } = useFetchData(`/weather/${city}`);
 
