@@ -5,29 +5,29 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 // Register Chart.js components (required for v3+)
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const BarChart = () => {
+const BarChart = ({data}) => {
   // Data for the chart
-  const data = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+  const chartData = {
+    labels: ['Temperature', 'Windspeed', 'Cloud Amount', 'Rain Amount', 'Rain Intensity', 'Snow Amount'],
     datasets: [
       {
-        label: 'Votes',
-        data: [12, 19, 3, 5, 2, 3],
+        label: 'Weather Metrics',
+        data: data,
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)'
+          'rgba(75, 192, 192, 0.6)',
+          'rgba(153, 102, 255, 0.6)',
+          'rgba(255, 159, 64, 0.6)',
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(75, 192, 192, 0.6)'
         ],
         borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
           'rgba(75, 192, 192, 1)',
           'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)'
+          'rgba(255, 159, 64, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(75, 192, 192, 1)'
         ],
         borderWidth: 1,
       },
@@ -35,7 +35,9 @@ const BarChart = () => {
   };
 
   // Chart options
-  const options = {
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
     scales: {
       y: {
         beginAtZero: true,
@@ -43,12 +45,8 @@ const BarChart = () => {
     },
   };
 
-  return (
-    <div style={{ width: '50%', margin: 'auto' }}>
-      <h2>Bar Chart Example</h2>
-      <Bar data={data} options={options} />
-    </div>
-  );
+  return <Bar data={chartData} options={chartOptions} />;
 };
 
 export default BarChart;
+

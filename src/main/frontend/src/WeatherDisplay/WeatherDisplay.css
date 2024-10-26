@@ -4,31 +4,12 @@ body, html {
     font-family: Arial, sans-serif;
     background-color: #fff7e6;
   }
-  
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    max-width: 400px;
-    margin: auto;
+
+  .chart-container {
+    position: relative;
+    height:60vh;
+    width:60vw;
+    margin:auto
   }
 
-.weather {
-    text-align: center;
-  }
-  
-  .temperature {
-    font-size: 48px;
-    font-weight: bold;
-  }
-  
-  .weather-info {
-    font-size: 24px;
-    color: #6e6e6e;
-  }
-  
-  .temperature-range {
-    color: #8e8e8e;
-    font-size: 16px;
-  }
+
