@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import useFetchData from '../hooks/useFetchData';
 import "./TransportDisplay.css";
 
 const TransportDisplay = ({city}) => {
-    const [transport, setTransport] = useState(null);
+
+    const { data: transport, loading, error } = useFetchData(`/transport/${city}`);
     
+    if (loading) return <p>Loading data...</p>;
+    if (error) return <p>{error}</p>;
+
     return (
         <div>
           <h3>Transport in {city}</h3>

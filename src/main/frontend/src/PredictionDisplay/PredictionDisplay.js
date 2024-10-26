@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import useFetchData from '../hooks/useFetchData';
 import "./PredictionDisplay.css";
 
 const PredictionDisplay = ({city}) => {
-  const [prediction, setPrediction] = useState(null);
+  const { data: prediction, loading, error } = useFetchData(`/predictions/${city}`);
+
+  if (loading) return <p>Loading data...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div>

@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import "./WeatherDisplay.css";
+import useFetchData from '../hooks/useFetchData';
 import BarChart from '../visualizations/BarChart';
 
 // Fetch and display weather data from the back-end.
 
 const WeatherDisplay = ({city}) => {
-    const [weather, setWeather] = useState(null);
+    /*const [weather, setWeather] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -26,7 +25,10 @@ const WeatherDisplay = ({city}) => {
       };
       fetchWeatherData();
     }, [city]);
-    
+    */
+
+    const { data: weather, loading, error } = useFetchData(`/weather/${city}`);
+
     if (loading) return <p>Loading data...</p>;
     if (error) return <p>{error}</p>;
 
