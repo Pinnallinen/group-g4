@@ -50,6 +50,8 @@ public class PredictionService {
 
     /**
      * Fetches weather and traffic predictions for a specific city at a given time.
+     * 
+     * TODO: does it make any sense to make predictions based on a (past) time? probably not
      *
      * @param city the city for which predictions are requested
      * @param time the time for which predictions are requested (e.g., "2024-10-11T14:00:00")

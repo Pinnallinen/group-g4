@@ -6,9 +6,10 @@ public class PredictionStatus {
 
     // The actual prediction
     // TODO: should this be a boolean (delayed/not delayed) or some other data type?
-    private boolean isDelayed;
+    private boolean isDelayedPrediction;
     
     // TODO: add the actual current traffic status 
+    private boolean isDelayed;
 
     public PredictionStatus() {
 
