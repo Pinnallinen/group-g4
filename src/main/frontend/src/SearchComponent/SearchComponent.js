@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { DataContext } from '../context/DataContext';
 import "./SearchComponent.css";
 
-const SearchComponent = ({onSearch}) => {
+const SearchComponent = () => {
   
-  const [query, setQuery] = useState(null);
+  const { city, updateCity } = useContext(DataContext);
+  const [query, setQuery] = useState(city);
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (query) {
-      onSearch(query);
+      updateCity(query);
     }
   };
 

@@ -1,9 +1,9 @@
-import useFetchData from '../hooks/useFetchData';
+import React, { useContext } from 'react';
+import { DataContext } from '../context/DataContext';
 import "./PredictionDisplay.css";
 
-const PredictionDisplay = ({city}) => {
-  const { data: prediction, loading, error } = useFetchData(`/predictions/${city}`);
-
+const PredictionDisplay = () => {
+  const { prediction, loading, error, city } = useContext(DataContext);
   if (loading) return <p>Loading data...</p>;
   if (error) return <p>{error}</p>;
 
