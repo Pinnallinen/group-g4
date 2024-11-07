@@ -8,29 +8,20 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 const BarChart = ({data}) => {
   // Data for the chart
   const chartData = {
-    labels: ['Temperature', 'Windspeed', 'Cloud Amount', 'Rain Amount', 'Rain Intensity', 'Snow Amount'],
+    labels: ['Temperature', 'Windspeed', 'Rain Amount', 'Rain Intensity', 'Snow Amount'],
     datasets: [
-      {
+      { 
         label: 'Weather Metrics',
         data: data,
         backgroundColor: [
           'rgba(75, 192, 192, 0.6)',
           'rgba(153, 102, 255, 0.6)',
-          'rgba(255, 159, 64, 0.6)',
           'rgba(255, 99, 132, 0.6)',
           'rgba(54, 162, 235, 0.6)',
           'rgba(75, 192, 192, 0.6)'
         ],
-        borderColor: [
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(75, 192, 192, 1)'
-        ],
         borderWidth: 1,
-      },
+      }
     ],
   };
 

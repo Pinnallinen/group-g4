@@ -1,4 +1,3 @@
-// App.js
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
@@ -6,29 +5,16 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 // Register Chart.js components (required for v3+)
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const DonutChart = () => {
+const DonutChart = ({data}) => {
   // Data for the donut chart
-  const data = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+  const chartData = {
+    labels: ['Cloudiness', 'Clear'],
     datasets: [
       {
-        label: 'Votes',
-        data: [12, 19, 3, 5, 2, 3],
+        data: data,
         backgroundColor: [
-          'rgba(255, 99, 132, 0.7)',
-          'rgba(54, 162, 235, 0.7)',
-          'rgba(255, 206, 86, 0.7)',
-          'rgba(75, 192, 192, 0.7)',
-          'rgba(153, 102, 255, 0.7)',
-          'rgba(255, 159, 64, 0.7)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
+          'rgba(66, 106, 173, 0.7)',
+          'rgba(221, 227, 237, 0.7)',
         ],
         borderWidth: 1,
       },
@@ -39,6 +25,8 @@ const DonutChart = () => {
   const options = {
     cutout: '70%', // This makes it a donut chart (controls the size of the center hole)
     responsive: true,
+    circumference: 180,
+    rotation: -90,
     plugins: {
       legend: {
         position: 'top',
@@ -49,12 +37,7 @@ const DonutChart = () => {
     },
   };
 
-  return (
-    <div style={{ width: '50%', margin: 'auto' }}>
-      <h2>Donut Chart Example</h2>
-      <Doughnut data={data} options={options} />
-    </div>
-  );
+  return <Doughnut data={chartData} options={options} />;
 };
 
 export default DonutChart;
