@@ -1,0 +1,29 @@
+.not-delayed {
+    animation-name: kf-not-delayed;
+    animation-duration: 0.5s;
+    background-color: rgb(202, 230, 202);
+    border-radius: 10px;
+    display: inline-block;
+    margin: 5px;
+    padding: 10px;
+}
+
+@keyframes kf-not-delayed {
+    0% {background-color: rgba(255, 255, 255, 0);}
+    100% {background-color: rgb(202, 230, 202);}
+}
+
+.delayed {
+    animation-name: kf-delayed;
+    animation-duration: 0.5s;
+    background-color: rgb(230, 202, 202);
+    border-radius: 10px;
+    display: inline-block;
+    margin: 5px;
+    padding: 10px;
+}
+
+@keyframes kf-delayed {
+    0% {background-color: rgba(255, 255, 255, 0);}
+    100% {background-color: rgb(230, 202, 202);}
+}

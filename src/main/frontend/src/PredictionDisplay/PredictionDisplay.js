@@ -10,11 +10,11 @@ const PredictionDisplay = () => {
   console.log(prediction);
   return (
     <div>
-    <h3>Predictions for {city}</h3>
+    <h3>The current status and predictions for {city}</h3>
     {prediction ? (
       <div>
-        <p>The traffic currently is {prediction.actualStatus ? "delayed" : "not delayed"}.</p>
-        <p>We predict that based on the weather the traffic will {prediction.prediction ? "be delayed" : "not be delayed"} soon.</p>
+        <p class={prediction.actualStatus ? "delayed" : "not-delayed"}>The traffic currently, is <b>{prediction.actualStatus ? "delayed" : "not delayed"}</b>.</p><br></br>
+        <p class={prediction.prediction ? "delayed" : "not-delayed"}>We predict that based on the weather the traffic will <b>{prediction.prediction ? "be delayed" : "not be delayed"}</b> soon.</p>
       </div>
     ) : (
       <p>No predictions available.</p>
