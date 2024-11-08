@@ -10,6 +10,7 @@ export const DataProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [favoriteCities, setFavoriteCities] = useState([]);
+  const [prediction, setPrediction] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,13 +18,15 @@ export const DataProvider = ({ children }) => {
       setError(null);
 
       try {
-        const [weatherResponse, transportResponse] = await Promise.all([
+        const [weatherResponse, transportResponse, predictionResponse] = await Promise.all([
           axios.get(`/weather/${city}`),
-          axios.get(`/transport/status/${city}`)
+          axios.get(`/transport/status/${city}`),
+          axios.get(`predictions/${city}`)
         ]);
 
         setWeather(weatherResponse.data);
         setTransport(transportResponse.data);
+        setPrediction(predictionResponse.data);
       } catch (err) {
         setError('Failed to fetch data');
       } finally {
@@ -98,7 +101,7 @@ export const DataProvider = ({ children }) => {
   };
 
   return (
-    <DataContext.Provider value={{ city, weather, transport, loading, error, favoriteCities, updateCity, addFavoriteCity, deleteFavoriteCity }}>
+    <DataContext.Provider value={{ city, weather, transport, prediction, loading, error, favoriteCities, updateCity, addFavoriteCity, deleteFavoriteCity }}>
       {children}
     </DataContext.Provider>
   );

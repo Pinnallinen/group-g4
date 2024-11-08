@@ -5,25 +5,27 @@ public class PredictionStatus {
     private String time;
 
     // The actual prediction
-    // TODO: should this be a boolean (delayed/not delayed) or some other data type?
+    // is delayed, yes or no
     private boolean isDelayedPrediction;
     
-    // TODO: add the actual current traffic status 
+    // The actual current traffic status based on our state-of-the art model
     private boolean isDelayed;
 
     public PredictionStatus() {
 
     }
-        
-    public PredictionStatus(String city, boolean isDelayed) {
-        this.city = city;
-        this.isDelayed = isDelayed;
-    }
 
-    public PredictionStatus(String city, String time, boolean isDelayed) {
+    public PredictionStatus(String city, boolean isDelayed, boolean isDelayedPrediction, String time) {
         this.city = city;
         this.time = time;
         this.isDelayed = isDelayed;
+        this.isDelayedPrediction = isDelayedPrediction;
+    }
+
+    public PredictionStatus(String city, boolean isDelayed, boolean isDelayedPrediction) {
+        this.city = city;
+        this.isDelayed = isDelayed;
+        this.isDelayedPrediction = isDelayedPrediction;
     }
 
     // Getters and setters
@@ -44,10 +46,18 @@ public class PredictionStatus {
     }
 
     public boolean getPrediction() {
+        return isDelayedPrediction;
+    }
+
+    public void setPrediction(boolean isDelayedPrediction) {
+        this.isDelayedPrediction = isDelayedPrediction;
+    }
+
+    public boolean getActualStatus() {
         return isDelayed;
     }
 
-    public void setPrediction(boolean isDelayed) {
+    public void setActualStatus(boolean isDelayed) {
         this.isDelayed = isDelayed;
     }
 }
