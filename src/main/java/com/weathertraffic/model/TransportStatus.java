@@ -6,6 +6,7 @@ import java.util.List;
 public class TransportStatus {
 
     private String description;
+    private String trafficStatus;
     private List<SensorData> sensors;
 
     public TransportStatus() {
@@ -18,6 +19,14 @@ public class TransportStatus {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getTrafficStatus() {
+        return trafficStatus;
+    }
+
+    public void setTrafficStatus(String trafficStatus) {
+        this.trafficStatus = trafficStatus;
     }
 
     public List<SensorData> getSensors() {
@@ -40,6 +49,7 @@ public class TransportStatus {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Transport Status: ").append(description).append("\n");
+        sb.append("Traffic Status: ").append(trafficStatus).append("\n");
 
         if (sensors == null || sensors.isEmpty()) {
             sb.append("No sensor data available.\n");

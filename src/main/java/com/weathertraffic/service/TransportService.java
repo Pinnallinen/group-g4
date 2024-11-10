@@ -49,6 +49,10 @@ public class TransportService {
                     if (sensorResponse != null && sensorResponse.has("sensorValues")) {
                         JsonNode sensorValues = sensorResponse.get("sensorValues");
 
+                        double totalValue = 0;
+                        double value1 = 0;
+                        int count = 0;
+
                         for (JsonNode sensorValue : sensorValues) {
                             try {
                                 // Safely extract sensor information, checking for nulls
@@ -61,6 +65,14 @@ public class TransportService {
                                 String timeWindowEnd = sensorValue.has("timeWindowEnd") ? sensorValue.get("timeWindowEnd").asText() : "N/A";
                                 String measuredTime = sensorValue.has("measuredTime") ? sensorValue.get("measuredTime").asText() : "N/A";
 
+                                // Check if the sensor name matches the specified criteria
+                                if (name.contains("LIUKUVA_SUUNTA1_VVAPAAS1") || name.contains("LIUKUVA_SUUNTA2_VVAPAAS2")) {
+                                   value1 = value / 100;
+                                   System.out.println("Value is:" + value + " and the new is:" + value1);
+                                   totalValue += value1;
+                                   count ++; 
+                                }
+                                System.out.println("Total value is:" + totalValue);
                                 // Log sensor information to confirm it's being added
                                 System.out.println("Adding sensor ID: " + sensorId + " Name: " + name);
 
@@ -71,6 +83,17 @@ public class TransportService {
                                 System.err.println("Error processing sensor data: " + e.getMessage());
                             }
                         }
+                        // Calculate the average and determine traffic status
+                        if (count > 0) {
+                            double averageValue = (totalValue / count) * 100;
+                            String trafficStatus = classifyTraffic(averageValue);
+                            status.setTrafficStatus(trafficStatus);
+                            System.out.println("Traffic Value is:" + averageValue);
+
+                        } else {
+                            status.setTrafficStatus("No relevant sensor data available.");
+                        }
+
                     } else {
                         System.out.println("No sensors found for station: " + stationName);
                     }
@@ -89,5 +112,23 @@ public class TransportService {
         
         System.out.println(status.toString());
         return status; // Return the TransportStatus object with all data from multiple stations
+    }
+
+
+    //function classifyTraffic
+    private String classifyTraffic(double averageValue) {
+        if (averageValue >= 0 && averageValue < 10) {
+            return "Stationary";
+        } else if (averageValue >= 10 && averageValue < 25) {
+            return "Queuing";
+        }else if (averageValue >= 25 && averageValue < 75) {
+            return "Slow";
+        }else if (averageValue >= 75 && averageValue < 90) {
+            return "Platooning";
+        }else if (averageValue >= 90 && averageValue < 100) {
+            return "Fluent";
+        }else {
+            return "Over the free flow speed";
+        }
     }
 }
