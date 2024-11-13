@@ -45,12 +45,12 @@ class WeatherControllerTest {
 
         // Act
         ResponseEntity<WeatherStatus> response = weatherController.getCurrentWeather("Helsinki", "current");
-        logger.info("Received response with status code: {}", response.getStatusCodeValue());
+        logger.info("Received response with status code: {}", response.getStatusCode());
 
         // Assert
         try {
             assertNotNull(response, "Response should not be null");
-            assertEquals(200, response.getStatusCodeValue(), "Status code should be 200");
+            assertEquals(200, response.getStatusCode().value(), "Status code should be 200");
             assertEquals("Sunny", response.getBody().getDescription(), "Weather description should match");
             assertEquals(20.0, response.getBody().getTemperature(), "Temperature should match");
             logger.info("All assertions passed successfully");
@@ -74,12 +74,12 @@ class WeatherControllerTest {
 
         // Act
         ResponseEntity<WeatherStatus> response = weatherController.getCurrentWeather("Helsinki", "2024-01-01T12:00:00Z");
-        logger.info("Received response with status code: {}", response.getStatusCodeValue());
+        logger.info("Received response with status code: {}", response.getStatusCode());
 
         // Assert
         try {
             assertNotNull(response, "Response should not be null");
-            assertEquals(200, response.getStatusCodeValue(), "Status code should be 200");
+            assertEquals(200, response.getStatusCode().value(), "Status code should be 200");
             assertEquals("Rainy", response.getBody().getDescription(), "Weather description should match");
             assertEquals(15.0, response.getBody().getTemperature(), "Temperature should match");
             logger.info("All assertions passed successfully");
@@ -87,5 +87,19 @@ class WeatherControllerTest {
             logger.error("Test failed with assertion error: {}", e.getMessage());
             throw e;
         }
+    }
+
+    @Test
+    @DisplayName("Get Current Weather returns Error Status")
+    void getCurrentWeather_Error() throws Exception {
+        logger.info("Starting getCurrentWeather_Error test");
+
+        // Arrange
+        when(weatherService.getCurrentWeather(anyString())).thenThrow(new RuntimeException("Service unavailable"));
+
+        // Act & Assert
+        assertThrows(RuntimeException.class, () -> {
+            weatherController.getCurrentWeather("Helsinki", "current");
+        });
     }
 }
