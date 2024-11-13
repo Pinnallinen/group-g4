@@ -88,6 +88,7 @@ public class TransportService {
                             double averageValue = (totalValue / count) * 100;
                             String trafficStatus = classifyTraffic(averageValue);
                             status.setTrafficStatus(trafficStatus);
+                            status.setFreeFlowPercentage(averageValue);
                             System.out.println("Traffic Value is:" + averageValue);
 
                         } else {

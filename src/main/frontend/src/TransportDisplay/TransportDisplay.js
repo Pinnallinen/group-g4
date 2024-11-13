@@ -12,9 +12,10 @@ const TransportDisplay = () => {
   return (
       <div>
         <h3>Transport in {city}</h3>
-        {transport ? (
+        {transport && transport.trafficStatus && transport.trafficStatus != "" ? (
           <div>
-            <p>Transport data available.</p>
+            <p>The traffic in the city goes <b>{Math.round(transport.freeFlowPercentage)}%</b> of its free flow speed.</p>
+            <p class={transport.freeFlowPercentage < 75 ? 'slow' : (transport.freeFlowPercentage < 90 ? 'platooning' : 'fast')}>The traffic in the city is <b>{transport.trafficStatus}</b>.</p>
           </div>
         ) : (
           <p>No transport data available.</p>

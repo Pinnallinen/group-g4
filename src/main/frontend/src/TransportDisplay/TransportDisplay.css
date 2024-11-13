@@ -1,0 +1,44 @@
+.fast {
+    animation-name: kf-free-flow;
+    animation-duration: 0.5s;
+    background-color: rgb(202, 230, 202);
+    border-radius: 10px;
+    display: inline-block;
+    margin: 5px;
+    padding: 10px;
+}
+
+@keyframes kf-free-flow {
+    0% {background-color: rgba(255, 255, 255, 0);}
+    100% {background-color: rgb(202, 230, 202);}
+}
+
+.slow {
+    animation-name: kf-slow;
+    animation-duration: 0.5s;
+    background-color: rgb(230, 202, 202);
+    border-radius: 10px;
+    display: inline-block;
+    margin: 5px;
+    padding: 10px;
+}
+
+@keyframes kf-slow {
+    0% {background-color: rgba(255, 255, 255, 0);}
+    100% {background-color: rgb(230, 202, 202);}
+}
+
+.platooning {
+    animation-name: kf-platooning;
+    animation-duration: 0.5s;
+    background-color: rgb(230, 230, 202);
+    border-radius: 10px;
+    display: inline-block;
+    margin: 5px;
+    padding: 10px;
+}
+
+@keyframes kf-platooning {
+    0% {background-color: rgba(255, 255, 255, 0);}
+    100% {background-color: rgb(230, 230, 202);}
+}

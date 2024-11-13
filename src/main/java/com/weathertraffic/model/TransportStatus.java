@@ -8,6 +8,7 @@ public class TransportStatus {
     private String description;
     private String trafficStatus;
     private List<SensorData> sensors;
+    private double freeFlowPercentage;
 
     public TransportStatus() {
         this.sensors = new ArrayList<>();
@@ -43,6 +44,10 @@ public class TransportStatus {
                                                value, timeWindowStart, timeWindowEnd, measuredTime);
         this.sensors.add(sensorData);
     }
+
+    public double getFreeFlowPercentage() { return freeFlowPercentage; }
+
+    public void setFreeFlowPercentage(double freeFlowPercentage) { this.freeFlowPercentage = freeFlowPercentage; }
 
     // Output in console
     @Override
