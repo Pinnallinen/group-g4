@@ -33,8 +33,8 @@ public class TransportService {
 
                 // Check if the station name contains the city
                 if (stationName.contains(city)) {
-                    System.out.println("Station found: " + stationName);
-                    System.out.println("Station id: " + stationId);
+                    // System.out.println("Station found: " + stationName);
+                    // System.out.println("Station id: " + stationId);
 
                     // Fetch sensor data using the stationId
                     JsonNode sensorResponse = client.get().uri(DIGITRAFFIC_API_URL + "/stations/" + stationId + "/data")
@@ -43,7 +43,7 @@ public class TransportService {
                             .block();
 
                     // Log the full response from the station data endpoint
-                    System.out.println("Full sensor response for station ID " + stationId + ": " + sensorResponse.toString());
+                    // System.out.println("Full sensor response for station ID " + stationId + ": " + sensorResponse.toString());
 
                     // Now we access the "sensorValues" field
                     if (sensorResponse != null && sensorResponse.has("sensorValues")) {
@@ -68,13 +68,13 @@ public class TransportService {
                                 // Check if the sensor name matches the specified criteria
                                 if (name.contains("LIUKUVA_SUUNTA1_VVAPAAS1") || name.contains("LIUKUVA_SUUNTA2_VVAPAAS2")) {
                                    value1 = value / 100;
-                                   System.out.println("Value is:" + value + " and the new is:" + value1);
+                                   // System.out.println("Value is:" + value + " and the new is:" + value1);
                                    totalValue += value1;
                                    count ++; 
                                 }
-                                System.out.println("Total value is:" + totalValue);
+                                // System.out.println("Total value is:" + totalValue);
                                 // Log sensor information to confirm it's being added
-                                System.out.println("Adding sensor ID: " + sensorId + " Name: " + name);
+                                // System.out.println("Adding sensor ID: " + sensorId + " Name: " + name);
 
                                 // Add the sensor data to the TransportStatus object
                                 status.addSensorData(sensorId, name, shortName, unit, value, timeWindowStart, timeWindowEnd, measuredTime);
@@ -89,7 +89,7 @@ public class TransportService {
                             String trafficStatus = classifyTraffic(averageValue);
                             status.setTrafficStatus(trafficStatus);
                             status.setFreeFlowPercentage(averageValue);
-                            System.out.println("Traffic Value is:" + averageValue);
+                            // System.out.println("Traffic Value is:" + averageValue);
 
                         } else {
                             status.setTrafficStatus("No relevant sensor data available.");
@@ -111,7 +111,7 @@ public class TransportService {
             System.out.println("Sensors successfully added.");
         }
         
-        System.out.println(status.toString());
+        // System.out.println(status.toString());
         return status; // Return the TransportStatus object with all data from multiple stations
     }
 

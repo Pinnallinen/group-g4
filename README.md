@@ -18,3 +18,9 @@ Java (Tested on version java 23 2024-09-17 Java(TM) SE Runtime Environment (buil
 2. type `mvn clean install` to install everything
 3. type `mvnw spring-boot:run` to run the app
 4. go to url `http://localhost:8080/` in your browser to see the app
+
+
+## to run only the test suite
+
+1. Navigate to the project folder in command line/terminal
+2. type `mvn clean test` to run all the tests

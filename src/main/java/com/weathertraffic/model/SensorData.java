@@ -23,6 +23,10 @@ public class SensorData {
         this.measuredTime = measuredTime;
     }
 
+    public SensorData() {
+        
+    }
+
     // Getters and setters for all fields
 
     public int getSensorId() {
