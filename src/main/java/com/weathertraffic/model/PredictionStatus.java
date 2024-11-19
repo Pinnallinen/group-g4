@@ -2,7 +2,6 @@ package com.weathertraffic.model;
 
 public class PredictionStatus {
     private String city;
-    private String time;
 
     // The actual prediction
     // is delayed, yes or no
@@ -13,13 +12,6 @@ public class PredictionStatus {
 
     public PredictionStatus() {
 
-    }
-
-    public PredictionStatus(String city, boolean isDelayed, boolean isDelayedPrediction, String time) {
-        this.city = city;
-        this.time = time;
-        this.isDelayed = isDelayed;
-        this.isDelayedPrediction = isDelayedPrediction;
     }
 
     public PredictionStatus(String city, boolean isDelayed, boolean isDelayedPrediction) {
@@ -35,14 +27,6 @@ public class PredictionStatus {
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 
     public boolean getPrediction() {

@@ -44,50 +44,19 @@ public class PredictionService {
         return predictionStatus;
     }
 
-    /**
-     * Fetches weather and traffic predictions for a specific city at a given time.
-     * 
-     * TODO: does it make any sense to make predictions based on a (past) time? probably not
-     *
-     * @param city the city for which predictions are requested
-     * @param time the time for which predictions are requested (e.g., "2024-10-11T14:00:00")
-     * @return a PredictionStatus object containing weather and traffic data for the specified time
-     * @throws Exception if an error occurs while fetching data from WeatherService or TransportService
-     */
-    public PredictionStatus getPredictionsAtTime(String city, String time) throws Exception {
-        // TODO: 
-        throw new UnsupportedOperationException();
-        /*
-        // Fetch weather data for the given time from WeatherService
-        WeatherStatus weatherAtTime = weatherService.getWeatherAtTime(city, time);
-
-        // Fetch traffic data for the given time from TransportService
-        // TODO: no getTransportAtTime exists
-        //TransportStatus trafficAtTime = transportService.getTransportAtTime(city, time);
-
-        
-
-        // Build the PredictionStatus object
-        PredictionStatus predictionStatus = new PredictionStatus();
-        predictionStatus.setCity(city);
-        predictionStatus.setTime(time);
-
-        return predictionStatus; */
-    }
-
     private boolean isTrafficActuallyDelayed(TransportStatus transportStatus) {
         List<SensorData> sensors = transportStatus.getSensors();
     
-        // Loop through each SensorData object to find one with "KESKINOPEUS_60MIN" in its name
+        // Loop through each SensorData object to find one with "VVAPAAS" in its name
+        // which means freeflow percentage from the speed limit. Above 90 is flowing traffic and less is more and more
+        // traffic jams
         for (SensorData sensorData : sensors) {
-            if (sensorData.getName().contains("KESKINOPEUS_60MIN")) {
-                // These sensors are mainly from the high-speed roads (highways) of Finland
-                // as such, we can assume that if the speed on the road drops below the out-of-city limit of 80km/h
-                // there is traffic jams on the road
-                if (sensorData.getValue() < 80) {
+            if (sensorData.getName().contains("VVAPAAS")) {
+                // 
+                if (sensorData.getValue() < 90) {
                     return true;
                 }
-                // If we find a match but speed is not below 80, return false immediately
+                // If we find a match but freeflow speed is NOT below traffic-jam levels immediately return not delayed
                 return false;
             }
         }
