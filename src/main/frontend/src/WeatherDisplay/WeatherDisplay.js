@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "./WeatherDisplay.css";
 import { DataContext } from "../context/DataContext";
 import BarChart from '../visualizations/BarChart';
@@ -10,6 +10,18 @@ import VisibilityBar from '../visualizations/VisibilityBar';
 
 const WeatherDisplay = () => {
   const { weather, loading, error, city } = useContext(DataContext);
+  const [selectedElements, setSelectedElements] = useState({
+    metrics: false,
+    clouds: false,
+    visibility: false
+  });
+
+  const handleCheckboxChange = (element) => {
+    setSelectedElements((prev) => ({
+      ...prev,
+      [element]: !prev[element],
+    }));
+  };
 
   if (loading) return <p>Loading data...</p>;
   if (error) return <p>{error}</p>;
@@ -17,6 +29,34 @@ const WeatherDisplay = () => {
   return (
     <div>
       <h3>Current weather in {city}</h3>
+      <div className="checkbox-container">
+        <p>Display weather graphics: </p>
+        <label>
+          <input
+            type="checkbox"
+            checked={selectedElements.temperature}
+            onChange={() => handleCheckboxChange('metrics')}
+          />
+          Weather Metrics
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={selectedElements.windSpeed}
+            onChange={() => handleCheckboxChange('clouds')}
+          />
+          Cloudiness
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={selectedElements.cloudiness}
+            onChange={() => handleCheckboxChange('visibility')}
+          />
+          Visibility
+        </label>
+      </div>
+
       {weather ? (
         <div className="weather-container">
           
@@ -27,11 +67,10 @@ const WeatherDisplay = () => {
             <p>Rain intensity: {weather.rainIntensity}</p>
             <p>Visibility: {weather.visibility}</p>
             <p>Snow amount: {weather.snowAmount}</p>
-          {/* Add to Favorites Button */}
-
           </div>
 
           {/* Chart to visualize weather metrics */}
+          {selectedElements.metrics && (
           <div className="chart-container">
             <BarChart data={[
               weather.temperature, 
@@ -40,16 +79,18 @@ const WeatherDisplay = () => {
               weather.rainIntensity, 
               weather.snowAmount
             ]} />
-          </div>
+            </div>)}
+          {selectedElements.clouds && (
           <div className="chart-container">
             <DonutChart data={[
               weather.cloudAmount,
               8 - weather.cloudAmount
             ]}/>
-          </div>
+          </div>)}
+          {selectedElements.visibility && (
           <div className="chart-container">
             <VisibilityBar visibility={weather.visibility} />
-          </div>
+          </div>)}
         </div>
       ) : (
         <p>No weather data available.</p>
