@@ -18,7 +18,8 @@
     "react-leaflet": "^4.2.1",
     "react-map-gl": "^7.1.7",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "react-gauge-component": "1.2.6"
   },
   "scripts": {
     "start": "react-scripts start",
