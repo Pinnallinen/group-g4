@@ -43,15 +43,8 @@ class PredictionServiceTest {
         weatherStatus.setSnowAmount(0);
         when(weatherService.getCurrentWeather(city)).thenReturn(weatherStatus);
 
-        // Mock TransportService
-        SensorData sensor = new SensorData();
-        sensor.setSensorId(1);
-        sensor.setName("VVAPAAS_HIGHWAY");
-        sensor.setShortName("VVAPAAS");
-        sensor.setUnit("%");
-        sensor.setValue(95); // No traffic delay
         TransportStatus transportStatus = new TransportStatus();
-        transportStatus.setSensors(Collections.singletonList(sensor));
+        transportStatus.setFreeFlowPercentage(95);
         when(transportService.getTransport(city)).thenReturn(transportStatus);
 
         // Call the method
@@ -69,21 +62,14 @@ class PredictionServiceTest {
 
         // Mock WeatherService
         WeatherStatus weatherStatus = new WeatherStatus();
-        weatherStatus.setWindSpeed(5); // Calm weather
+        weatherStatus.setWindSpeed(1); // Calm weather
         weatherStatus.setRainAmount(0);
         weatherStatus.setVisibility(10);
         weatherStatus.setSnowAmount(0);
         when(weatherService.getCurrentWeather(city)).thenReturn(weatherStatus);
 
-        // Mock TransportService
-        SensorData sensor = new SensorData();
-        sensor.setSensorId(1);
-        sensor.setName("VVAPAAS_HIGHWAY");
-        sensor.setShortName("VVAPAAS");
-        sensor.setUnit("%");
-        sensor.setValue(85); // Traffic delay
         TransportStatus transportStatus = new TransportStatus();
-        transportStatus.setSensors(Collections.singletonList(sensor));
+        transportStatus.setFreeFlowPercentage(85);
         when(transportService.getTransport(city)).thenReturn(transportStatus);
 
         // Call the method
@@ -101,21 +87,14 @@ class PredictionServiceTest {
 
         // Mock WeatherService
         WeatherStatus weatherStatus = new WeatherStatus();
-        weatherStatus.setWindSpeed(5);
+        weatherStatus.setWindSpeed(1);
         weatherStatus.setRainAmount(0);
         weatherStatus.setVisibility(10);
         weatherStatus.setSnowAmount(0); // Calm weather
         when(weatherService.getCurrentWeather(city)).thenReturn(weatherStatus);
 
-        // Mock TransportService
-        SensorData sensor = new SensorData();
-        sensor.setSensorId(1);
-        sensor.setName("VVAPAAS_HIGHWAY");
-        sensor.setShortName("VVAPAAS");
-        sensor.setUnit("%");
-        sensor.setValue(95); // No traffic delay
         TransportStatus transportStatus = new TransportStatus();
-        transportStatus.setSensors(Collections.singletonList(sensor));
+        transportStatus.setFreeFlowPercentage(95);
         when(transportService.getTransport(city)).thenReturn(transportStatus);
 
         // Call the method

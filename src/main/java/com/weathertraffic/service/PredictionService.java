@@ -45,34 +45,23 @@ public class PredictionService {
     }
 
     private boolean isTrafficActuallyDelayed(TransportStatus transportStatus) {
-        List<SensorData> sensors = transportStatus.getSensors();
+        double freeFlowPercentage = transportStatus.getFreeFlowPercentage();
     
-        // Loop through each SensorData object to find one with "VVAPAAS" in its name
-        // which means freeflow percentage from the speed limit. Above 90 is flowing traffic and less is more and more
-        // traffic jams
-        for (SensorData sensorData : sensors) {
-            if (sensorData.getName().contains("VVAPAAS")) {
-                // 
-                if (sensorData.getValue() < 90) {
-                    return true;
-                }
-                // If we find a match but freeflow speed is NOT below traffic-jam levels immediately return not delayed
-                return false;
-            }
+        if (freeFlowPercentage < 90) {
+            return true;
         }
-    
-        // Return false if no matching SensorData is found
         return false;
     }
     
 
     private boolean predictWillTrafficBeDelayed(WeatherStatus weatherStatus) {
         boolean predictionIsDelayed = false;
+
         if ( 
-            weatherStatus.getWindSpeed() > 10 // over 10m/s
-            || weatherStatus.getRainAmount() > 10 // over 10cm/h
+            weatherStatus.getWindSpeed() > 5 // over 5m/s
+            || weatherStatus.getRainAmount() > 4 // over 4cm/h
             || weatherStatus.getVisibility() < 2 // below 2km
-            || weatherStatus.getSnowAmount() > 2 // over 2cm on the ground
+            || weatherStatus.getSnowAmount() > 1 // over 1cm on the ground
             ) 
         {
             predictionIsDelayed = true;
