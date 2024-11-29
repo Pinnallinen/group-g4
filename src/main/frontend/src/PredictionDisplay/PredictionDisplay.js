@@ -9,7 +9,7 @@ const PredictionDisplay = () => {
 
   console.log(prediction);
   return (
-    <div>
+    <div className="prediction-container">
     <h3>The current status and predictions for {city}</h3>
     {prediction ? (
       <div>

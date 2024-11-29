@@ -11,7 +11,7 @@ const TransportDisplay = () => {
   if (error) return <p>{error}</p>;
 
   return (
-      <div>
+      <div className="transport-container">
         <h3>Transport in {city}</h3>
         {transport && transport.trafficStatus && transport.trafficStatus != "" ? (
           <div>

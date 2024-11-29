@@ -24,7 +24,7 @@ const FavoriteCities = () => {
 
   return (
     <div className="favorite-cities">
-      <h2>Favorite Cities</h2>
+      <h3>Favorite Cities</h3>
       <div className="input-group">
         <input
           type="text"

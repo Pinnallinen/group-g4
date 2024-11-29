@@ -25,6 +25,7 @@ const DonutChart = ({data}) => {
   const options = {
     cutout: '70%', // This makes it a donut chart (controls the size of the center hole)
     responsive: true,
+    maintainAspectRatio: false,
     circumference: 180,
     rotation: -90,
     plugins: {

@@ -26,6 +26,7 @@ const VisibilityBar = ({ visibility }) => {
 
   const options = {
     indexAxis: 'y', // Horizontal bar
+    maintainAspectRatio: false,
     scales: {
       x: {
         min: 0,

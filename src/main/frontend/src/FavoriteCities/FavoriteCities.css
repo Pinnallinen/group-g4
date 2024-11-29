@@ -1,16 +1,14 @@
 
 .favorite-cities {
-    background: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Semi-transparent border */
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    backdrop-filter: blur(10px); /* Background blur */
-    -webkit-backdrop-filter: blur(10px); /* Background blur for Safari */
-    color: #fff; /* White text color */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: #f5f9fc;
+  max-width: 100%;
+  box-sizing: border-box;
   }
 
-.favorite-cities h2 {
+.favorite-cities h3 {
   margin-top: 0;
   color: #333;
 }
@@ -24,60 +22,50 @@
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.favorite-cities .add-button {
-  height: 40px;
-  border: none;
-  border-radius: 10px;
-  background-color: #8d7777;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.favorite-cities .add-button:hover {
-  background-color: #635353; 
-}
-
 .favorite-cities ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
   }
   
-  .favorite-cities li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Semi-transparent border */
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    color: #000; /* White text color */
-  }
+.favorite-cities li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Semi-transparent border */
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
 
 .favorite-cities li:last-child {
   margin-bottom: 0;
 }
 
-.favorite-cities .action-buttons {
-  display: flex;
-  gap: 5px;
-}
-
-.favorite-cities .action-buttons button {
-  padding: 5px 10px;
+.favorite-cities button {
+  margin-left: 10px;
+  padding: 10px 10px;
   border: none;
-  border-radius: 4px;
-  background-color: #8d7777; 
+  border-radius: 10px;
+  background-color: #01152b;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
-.favorite-cities .action-buttons button:hover {
-  background-color: #756363; 
+.favorite-cities button:hover {
+  background-color: #053e7a;
+}
+
+.favorite-cities .action-buttons {
+  display: flex;
+}
+
+.favorite-cities .action-buttons button {
+  padding: 5px 10px;
+  border-radius: 4px;
 }
 
 .favorite-cities .error {

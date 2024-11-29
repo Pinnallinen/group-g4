@@ -9,7 +9,7 @@ import VisibilityBar from '../visualizations/VisibilityBar';
 // Fetch and display weather data from the back-end.
 
 const WeatherDisplay = () => {
-  const { weather, loading, error, city } = useContext(DataContext);
+   const { weather, loading, error, city } = useContext(DataContext);
   const [selectedElements, setSelectedElements] = useState({
     metrics: false,
     clouds: false,
@@ -23,11 +23,11 @@ const WeatherDisplay = () => {
     }));
   };
 
-  if (loading) return <p>Loading data...</p>;
-  if (error) return <p>{error}</p>;
+   if (loading) return <p>Loading data...</p>;
+   if (error) return <p>{error}</p>;
 
   return (
-    <div>
+    <div className="weather-container">
       <h3>Current weather in {city}</h3>
       <div className="checkbox-container">
         <p>Display weather graphics: </p>
@@ -58,38 +58,44 @@ const WeatherDisplay = () => {
       </div>
 
       {weather ? (
-        <div className="weather-container">
+        <div>
           
-          <div>
-            <p>Temperature: {weather.temperature}</p>
-            <p>Windspeed: {weather.windSpeed}</p>
-            <p>Rain amount: {weather.rainAmount}</p>
-            <p>Rain intensity: {weather.rainIntensity}</p>
-            <p>Visibility: {weather.visibility}</p>
-            <p>Snow amount: {weather.snowAmount}</p>
+          <div className="info-box">
+            <p>Temperature: {Math.round(weather.temperature)} °C</p>
+            <p>Windspeed: {Math.round(weather.windSpeed)} m/s</p>
+            <p>Rain amount: {weather.rainAmount} mm</p>
+            <p>Rain intensity: {weather.rainIntensity} mm/h</p>
+            <p>Visibility: {weather.visibility / 1000} km</p>
+            <p>Snow amount: {weather.snowAmount} cm</p>
           </div>
 
           {/* Chart to visualize weather metrics */}
           {selectedElements.metrics && (
-          <div className="chart-container">
-            <BarChart data={[
-              weather.temperature, 
-              weather.windSpeed,  
-              weather.rainAmount, 
-              weather.rainIntensity, 
-              weather.snowAmount
-            ]} />
-            </div>)}
+          <div className="info-box">
+            <div className="chart-container">
+              <BarChart data={[
+                weather.temperature,
+                weather.windSpeed,
+                weather.rainAmount,
+                weather.rainIntensity,
+                weather.snowAmount
+              ]} />
+              </div>
+          </div>)}
           {selectedElements.clouds && (
-          <div className="chart-container">
-            <DonutChart data={[
-              weather.cloudAmount,
-              8 - weather.cloudAmount
-            ]}/>
+          <div className="info-box">
+            <div className="chart-container">
+              <DonutChart data={[
+                weather.cloudAmount,
+                8 - weather.cloudAmount
+              ]}/>
+            </div>
           </div>)}
           {selectedElements.visibility && (
-          <div className="chart-container">
-            <VisibilityBar visibility={weather.visibility} />
+          <div className="info-box">
+            <div className="chart-container">
+              <VisibilityBar visibility={weather.visibility} />
+            </div>
           </div>)}
         </div>
       ) : (
