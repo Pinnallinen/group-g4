@@ -3,14 +3,11 @@ package com.weathertraffic.service;
 import com.weathertraffic.model.PredictionStatus;
 import com.weathertraffic.model.WeatherStatus;
 import com.weathertraffic.model.TransportStatus;
-import com.weathertraffic.model.SensorData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

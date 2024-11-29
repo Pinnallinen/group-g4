@@ -3,13 +3,9 @@ package com.weathertraffic.service;
 import com.weathertraffic.model.PredictionStatus;
 import com.weathertraffic.model.WeatherStatus;
 import com.weathertraffic.model.TransportStatus;
-import com.weathertraffic.model.SensorData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.UnsupportedOperationException;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PredictionService {
