@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./WeatherDisplay.css";
 import { DataContext } from "../context/DataContext";
 import BarChart from '../visualizations/BarChart';
@@ -9,12 +9,21 @@ import VisibilityBar from '../visualizations/VisibilityBar';
 // Fetch and display weather data from the back-end.
 
 const WeatherDisplay = () => {
-   const { weather, loading, error, city } = useContext(DataContext);
+  const { weather, loading, error, city } = useContext(DataContext);
   const [selectedElements, setSelectedElements] = useState({
     metrics: false,
     clouds: false,
     visibility: false
   });
+
+  // Reset checkboxes when city changes
+  useEffect(() => {
+    setSelectedElements({
+      metrics: false,
+      clouds: false,
+      visibility: false,
+    });
+  }, [city]);
 
   const handleCheckboxChange = (element) => {
     setSelectedElements((prev) => ({
@@ -61,12 +70,12 @@ const WeatherDisplay = () => {
         <div>
           
           <div className="info-box">
-            <p>Temperature: {Math.round(weather.temperature)} °C</p>
-            <p>Windspeed: {Math.round(weather.windSpeed)} m/s</p>
-            <p>Rain amount: {weather.rainAmount} mm</p>
-            <p>Rain intensity: {weather.rainIntensity} mm/h</p>
-            <p>Visibility: {weather.visibility / 1000} km</p>
-            <p>Snow amount: {weather.snowAmount} cm</p>
+            <p>Temperature: {Number.isFinite(weather.temperature) ? `${weather.temperature.toFixed(1)} °C` : 'No data'}</p>
+            <p>Windspeed: {Number.isFinite(weather.windSpeed) ? `${weather.windSpeed.toFixed(1)} m/s` : 'No data'}</p>
+            <p>Rain amount: {Number.isFinite(weather.rainAmount) ? `${weather.rainAmount.toFixed(2)} mm`  : 'No data'}</p>
+            <p>Rain intensity: {Number.isFinite(weather.rainIntensity) ? `${weather.rainIntensity.toFixed(2)} mm/h`  : 'No data'}</p>
+            <p>Visibility: {Number.isFinite(weather.visibility) ? `${weather.visibility / 1000} km` : 'No data'}</p>
+            <p>Snow amount: {Number.isFinite(weather.snowAmount) ? `${weather.snowAmount.toFixed(1)} cm` : 'No data'}</p>
           </div>
 
           {/* Chart to visualize weather metrics */}
