@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./WeatherDisplay.css";
 import { DataContext } from "../context/DataContext";
 import BarChart from '../visualizations/BarChart';
@@ -9,12 +9,21 @@ import VisibilityBar from '../visualizations/VisibilityBar';
 // Fetch and display weather data from the back-end.
 
 const WeatherDisplay = () => {
-   const { weather, loading, error, city } = useContext(DataContext);
+  const { weather, loading, error, city } = useContext(DataContext);
   const [selectedElements, setSelectedElements] = useState({
     metrics: false,
     clouds: false,
     visibility: false
   });
+
+  // Reset checkboxes when city changes
+  useEffect(() => {
+    setSelectedElements({
+      metrics: false,
+      clouds: false,
+      visibility: false,
+    });
+  }, [city]);
 
   const handleCheckboxChange = (element) => {
     setSelectedElements((prev) => ({
@@ -63,8 +72,8 @@ const WeatherDisplay = () => {
           <div className="info-box">
             <p>Temperature: {Math.round(weather.temperature)} °C</p>
             <p>Windspeed: {Math.round(weather.windSpeed)} m/s</p>
-            <p>Rain amount: {weather.rainAmount} mm</p>
-            <p>Rain intensity: {weather.rainIntensity} mm/h</p>
+            <p>Rain amount: {weather.rainAmount.toFixed(2)} mm</p>
+            <p>Rain intensity: {weather.rainIntensity.toFixed(2)} mm/h</p>
             <p>Visibility: {weather.visibility / 1000} km</p>
             <p>Snow amount: {weather.snowAmount} cm</p>
           </div>
