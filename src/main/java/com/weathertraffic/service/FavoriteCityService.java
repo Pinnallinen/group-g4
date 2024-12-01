@@ -15,14 +15,23 @@ import java.util.List;
 
 @Service
 public class FavoriteCityService {
+    private static List<LocationModel> loadedCities = null;
+
     private static final String CONFIG_FILE_PATH = "config.json";
     private final JsonReadAndWrite jsonReadAndWrite = new JsonReadAndWrite();
     private static final Logger logger = LoggerFactory.getLogger(FavoriteCityService.class);
 
     public List<LocationModel> loadFavoriteCities() throws IOException {
         try {
-            String jsonContent = jsonReadAndWrite.readFromFile(CONFIG_FILE_PATH);
-            return new Gson().fromJson(jsonContent, new TypeToken<List<LocationModel>>() {}.getType());
+            if (loadedCities == null)
+            {
+                String jsonContent = jsonReadAndWrite.readFromFile(CONFIG_FILE_PATH);
+                List<LocationModel> favoriteCities = new Gson().fromJson(jsonContent, new TypeToken<List<LocationModel>>() {}.getType());
+                logger.info("Cities " + favoriteCities.size());
+                loadedCities = favoriteCities;
+                return new Gson().fromJson(jsonContent, new TypeToken<List<LocationModel>>() {}.getType());
+            }
+            else return loadedCities;
         } catch (Exception e) {
             logger.error("Failed to load favorite cities: {}", e.getMessage());
             return new ArrayList<>();
