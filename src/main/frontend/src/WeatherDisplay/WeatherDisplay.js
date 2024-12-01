@@ -70,12 +70,12 @@ const WeatherDisplay = () => {
         <div>
           
           <div className="info-box">
-            <p>Temperature: {Math.round(weather.temperature)} °C</p>
-            <p>Windspeed: {Math.round(weather.windSpeed)} m/s</p>
-            <p>Rain amount: {weather.rainAmount.toFixed(2)} mm</p>
-            <p>Rain intensity: {weather.rainIntensity.toFixed(2)} mm/h</p>
-            <p>Visibility: {weather.visibility / 1000} km</p>
-            <p>Snow amount: {weather.snowAmount} cm</p>
+            <p>Temperature: {Number.isFinite(weather.temperature) ? `${weather.temperature.toFixed(1)} °C` : 'No data'}</p>
+            <p>Windspeed: {Number.isFinite(weather.windSpeed) ? `${weather.windSpeed.toFixed(1)} m/s` : 'No data'}</p>
+            <p>Rain amount: {Number.isFinite(weather.rainAmount) ? `${weather.rainAmount.toFixed(2)} mm`  : 'No data'}</p>
+            <p>Rain intensity: {Number.isFinite(weather.rainIntensity) ? `${weather.rainIntensity.toFixed(2)} mm/h`  : 'No data'}</p>
+            <p>Visibility: {Number.isFinite(weather.visibility) ? `${weather.visibility / 1000} km` : 'No data'}</p>
+            <p>Snow amount: {Number.isFinite(weather.snowAmount) ? `${weather.snowAmount.toFixed(1)} cm` : 'No data'}</p>
           </div>
 
           {/* Chart to visualize weather metrics */}
